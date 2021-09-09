@@ -7,8 +7,35 @@
 
     <!--Aquí va lo que cambia, y lo asociado a está vista :) -->
     <h1>Este es el título del Inicio que cambio</h1>
-    <p>Se ha heredado todo desde la plantilla padre</p>
+  
 
-    <h3>En el hijo, inicio.html, casí no hay nada :)</h3>
+    <h3>Podes buscar una camada:</h3>
+
+    <form action="/AppCoder/buscar/" method="GET">
+
+        <input type="number" name="camada" id="camada">
+
+        <input type="submit" value="Buscar">
+
+
+
+
+    </form>
+
+    
+
+    {% if cursos %}
+
+    <p>Estamos buscando el: {{camada}}</p>
+
+    <ul>
+	{% for curso in cursos %}
+		<li> {{curso.nombre}} </li>
+		<li> {{curso.camada}} </li>
+	{% endfor %}
+
+    </ul>
+
+    {% endif %}
 
 {% endblock %}
