@@ -1,7 +1,10 @@
 from django.urls import path
 
-from AppCoder import views
+#cosas para el login
+from django.contrib.auth.views import LogoutView
 
+
+from AppCoder import views
 
 
 
@@ -28,11 +31,13 @@ urlpatterns = [
     path(r'^editar/(?P<pk>\d+)$', views.CursoUpdate.as_view(), name='Edit'),
     path(r'^borrar/(?P<pk>\d+)$', views.CursoDelete.as_view(), name='Delete'),
 
-    #path(r'^$', views.CursoList.as_view(), name='list'),
-    #path(r'^(?P<pk>\d+)$', views.CursoDetalle.as_view(), name='detail'),
-    #path(r'^nuevo$', views.CursoCreacion.as_view(), name='new'),
-    #path(r'^editar/(?P<pk>\d+)$', views.CursoUpdate.as_view(), name='edit'),
-    #path(r'^borrar/(?P<pk>\d+)$', views.CursoDelete.as_view(), name='delete'),
+
+
+    path('login', views.login_request, name = 'Login'),
+    path('register', views.register, name = 'Register'),
+    path('logout', LogoutView.as_view(template_name='AppCoder/logout.html'), name = 'Logout'),
+
+   
 
 ]
 

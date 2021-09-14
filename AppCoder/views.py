@@ -1,14 +1,22 @@
 from typing import List
-from django.http.request import QueryDict
+
 from django.shortcuts import redirect, render, HttpResponse
 from django.http import HttpResponse
 from AppCoder.models import Curso, Profesor
-from AppCoder.forms import CursoFormulario, ProfesorFormulario
+from AppCoder.forms import CursoFormulario, ProfesorFormulario, UserRegisterForm
 
 from django.views.generic import ListView
 from django.views.generic.detail import DetailView
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
-from django.urls import reverse_lazy
+
+#Para el login
+
+from django.contrib.auth.forms import AuthenticationForm
+from django.contrib.auth import login, logout, authenticate
+
+#Decorador por defecto
+from django.contrib.auth.decorators import login_required
+
 
 
 
@@ -23,7 +31,7 @@ def curso(request):
 
       return HttpResponse(documentoDeTexto)
 
-
+@login_required
 def inicio(request):
 
       return render(request, "AppCoder/inicio.html")
@@ -208,4 +216,62 @@ class CursoDelete(DeleteView):
 
       model = Curso
       success_url = "/AppCoder/curso/list"
+
+
+
+
+def logout_request(request):
+      logout(request)
+      messages.info(request, "Saliste sin problemas")
+      return redirect("inicio")
      
+
+def login_request(request):
+
+
+      if request.method == "POST":
+            form = AuthenticationForm(request, data = request.POST)
+
+            if form.is_valid():
+                  usuario = form.cleaned_data.get('username')
+                  contra = form.cleaned_data.get('password')
+
+                  user = authenticate(username=usuario, password=contra)
+
+            
+                  if user is not None:
+                        login(request, user)
+                       
+                        return render(request,"AppCoder/inicio.html",  {"mensaje":f"Bienvenido {usuario}"} )
+                  else:
+                        
+                        return render(request,"AppCoder/inicio.html", {"mensaje":"Error, datos incorrectos"} )
+
+            else:
+                        
+                        return render(request,"AppCoder/inicio.html" ,  {"mensaje":"Error, formulario erroneo"})
+
+      form = AuthenticationForm()
+
+      return render(request,"AppCoder/login.html", {'form':form} )
+
+
+
+def register(request):
+
+      if request.method == 'POST':
+
+            #form = UserCreationForm(request.POST)
+            form = UserRegisterForm(request.POST)
+            if form.is_valid():
+
+                  username = form.cleaned_data['username']
+                  form.save()
+                  return render(request,"AppCoder/inicio.html" ,  {"mensaje":"Usuario Creado :)"})
+
+
+      else:
+            #form = UserCreationForm()       
+            form = UserRegisterForm()     
+
+      return render(request,"AppCoder/registro.html" ,  {"form":form})
