@@ -4,6 +4,10 @@
 
 {% block contenidoQueCambia %}
 
+        <div class="text-center">
+            <img height="40px" src="{{url}}" >
+            <h3>Que bueno verte {{user.username}}</h3>
+        </div>
 
     <!--Aquí va lo que cambia, y lo asociado a está vista :) -->
     <h1>{{mensaje}}</h1>
@@ -36,6 +40,13 @@
 
     </ul>
 
+    {% else %}
+    <p>No hay datos con esa descripción.</p>
+
     {% endif %}
+
+    <p style="color: red;">{{respuesta}}</p>
+ 
+   
 
 {% endblock %}

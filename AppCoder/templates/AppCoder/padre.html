@@ -4,6 +4,9 @@
 
         {% load static %}
 
+       
+      
+
         <meta charset="utf-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
         <meta name="description" content="" />
@@ -29,7 +32,15 @@
                 <a class="navbar-brand" href="{% url 'Cursos' %}">Cursos</a>
                 <a class="navbar-brand" href="{% url 'Estudiantes' %}">Estudiantes</a>
                 <a class="navbar-brand" href="{% url 'Entregables' %}">Entregables</a>
-                <a class="btn btn-primary" href="#NADAAUN">INICIAR</a>
+                {% if not request.user.is_authenticated %}
+                <a class="btn btn-primary" href="{% url 'Login' %}">INICIAR</a>
+                {% endif %}
+
+                {% if request.user.is_authenticated %}
+                
+                <p class="text-muted small mb-4 mb-lg-0"> Hola, {{user.username}}!!!.</p>
+                {% endif %}
+
             </div>
         </nav>
 

@@ -18,10 +18,20 @@ from django.urls import path, include
 #from AppCoder.views import * #Ya no seria necesario :) 
 
 
+
+#Para las imagenes
+from django.conf import settings
+from django.conf.urls.static import static
+
+
 urlpatterns = [
     path('admin/', admin.site.urls),
 
     path('AppCoder/', include('AppCoder.urls')),
- 
- 
+
 ]
+
+
+#Para las imagenes
+urlpatterns+= static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+
